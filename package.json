@@ -1,0 +1,17 @@
+{
+  "name": "backendpostgressql",
+  "version": "1.0.0",
+  "description": "PostgreSQL backend for Node.js and Express",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "Node.js",
+    "Express",
+    "PostgreSQL"
+  ],
+  "author": "TM.dev",
+  "license": "ISC",
+  "type": "commonjs"
+}
