@@ -6,6 +6,10 @@
   "scripts": {
     "dev": "nodemon index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AbdullayevTemurmalik/BackendPostgresSQL.git"
+  },
   "keywords": [
     "Node.js",
     "Express",
@@ -13,5 +17,9 @@
   ],
   "author": "TM.dev",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/AbdullayevTemurmalik/BackendPostgresSQL/issues"
+  },
+  "homepage": "https://github.com/AbdullayevTemurmalik/BackendPostgresSQL#readme"
 }
