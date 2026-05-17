@@ -3,10 +3,14 @@ const cors = require("cors");
 require("dotenv").config();
 const sequelize = require("./config/database");
 const setupSwagger = require("./swagger/swagger");
+const User = require("./routes/user.route");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+// Routers
+app.use("/users", User);
 
 setupSwagger(app);
 
