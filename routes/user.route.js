@@ -6,6 +6,8 @@ const {
   getUsers,
   getUserById,
   updateUser,
+  deleteUser,
+  searchUserByName,
 } = require("../controllers/user.controller");
 
 /**
@@ -136,5 +138,51 @@ router.get("/getUser/:id", getUserById);
  *         description: Server xatosi
  */
 router.put("/updateUser/:id", updateUser);
+
+/**
+ * @swagger
+ * /users/deleteUser/{id}:
+ *   delete:
+ *     summary: Foydalanuvchini o‘chirish
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         example: 1
+ *     responses:
+ *       204:
+ *         description: Foydalanuvchi o‘chirildi
+ *       404:
+ *         description: Foydalanuvchi topilmadi
+ *       500:
+ *         description: Server xatosi
+ */
+router.delete("/deleteUser/:id", deleteUser);
+
+/**
+ * @swagger
+ * /users/searchUserByName:
+ *   get:
+ *     summary: Foydalanuvchini ism bo‘yicha qidirish
+ *     tags: [Users]
+ *     parameters:
+ *       - in: query
+ *         name: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *         example: temurmalik
+ *     responses:
+ *       200:
+ *         description: Qidirilgan foydalanuvchilar
+ *       400:
+ *         description: Qidiruv so‘rovi talab qilinadi
+ *       500:
+ *         description: Server xatosi
+ */
+router.get("/searchUserByName", searchUserByName);
 
 module.exports = router;

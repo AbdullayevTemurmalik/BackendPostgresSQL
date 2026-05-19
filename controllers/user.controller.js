@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { User } = require("../models");
 const { ValidateUser } = require("../validation/user.validation");
 
@@ -57,5 +58,42 @@ exports.updateUser = async (req, res) => {
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+// Delete user
+exports.deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id);
+    if (!user) return res.status(404).send("User not found");
+
+    const userData = user.toJSON();
+
+    await user.destroy();
+    res.status(204).send(userData);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+// Search user by name
+
+exports.searchUserByName = async (req, res) => {
+  try {
+    const { query } = req.query;
+    if (!query) {
+      return res.status(400).json("Search query is required");
+    }
+    const users = await User.findAll({
+      where: {
+        [Op.or]: [
+          { userName: { [Op.like]: `%${query}%` } },
+          { email: { [Op.iLike]: `%${query}%` } },
+        ],
+      },
+    });
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json(error.message);
   }
 };
