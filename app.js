@@ -12,6 +12,7 @@ app.use(cors());
 // Routers
 app.use("/users", User);
 app.use("/customers", require("./routes/customer.route"));
+app.use("/payments", require("./routes/payment.route"));
 
 setupSwagger(app);
 

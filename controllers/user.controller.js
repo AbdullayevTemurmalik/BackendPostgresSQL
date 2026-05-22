@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { User } = require("../models");
+const { User, Customer, Payment } = require("../models");
 const { ValidateUser } = require("../validation/user.validation");
 
 // Post user
@@ -7,7 +7,7 @@ exports.createUser = async (req, res) => {
   const { error } = ValidateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const { userName, email, password, customer_id } = req.body;
+  const { userName, email, password, customer_id, payment_id } = req.body;
 
   try {
     const existingUser = await User.findOne({ where: { userName } });
@@ -16,6 +16,14 @@ exports.createUser = async (req, res) => {
     }
 
     const user = await User.create({ userName, email, password, customer_id });
+
+    if (payment_id) {
+      const payment = await Payment.findByPk(payment_id);
+      if (payment) {
+        await payment.update({ user_id: user.id });
+      }
+    }
+
     res.status(201).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -25,7 +33,12 @@ exports.createUser = async (req, res) => {
 // GetAll users
 exports.getUsers = async (req, res) => {
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      include: [
+        { model: Customer, as: "customer" },
+        { model: Payment, as: "payments" },
+      ],
+    });
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -35,7 +48,12 @@ exports.getUsers = async (req, res) => {
 // Get user by ID
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findByPk(req.params.id);
+    const user = await User.findByPk(req.params.id, {
+      include: [
+        { model: Customer, as: "customer" },
+        { model: Payment, as: "payments" },
+      ],
+    });
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -91,6 +109,10 @@ exports.searchUserByName = async (req, res) => {
           { email: { [Op.iLike]: `%${query}%` } },
         ],
       },
+      include: [
+        { model: Customer, as: "customer" },
+        { model: Payment, as: "payments" },
+      ],
     });
     res.status(200).json(users);
   } catch (error) {

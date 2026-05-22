@@ -5,6 +5,7 @@ const userSchema = Joi.object({
   password: Joi.string().min(6).optional(),
   email: Joi.string().required(),
   customer_id: Joi.number().integer().optional(),
+  payment_id: Joi.number().integer().optional(),
 });
 
 function ValidateUser(user) {

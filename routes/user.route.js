@@ -46,6 +46,9 @@ const {
  *               customer_id:
  *                 type: integer
  *                 example: 1
+ *               payment_id:
+ *                 type: integer
+ *                 example: 1
  *     responses:
  *       201:
  *         description: Foydalanuvchi yaratildi

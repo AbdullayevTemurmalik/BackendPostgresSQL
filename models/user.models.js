@@ -25,10 +25,22 @@ module.exports = (sequelize, DataType) => {
     },
   });
 
+  User.associate = (models) => {
+    User.belongsTo(models.Customer, {
+      foreignKey: "customer_id",
+      as: "customer",
+    });
+    User.hasMany(models.Payment, {
+      foreignKey: "user_id",
+      as: "payments",
+    });
+  };
+
   User.beforeSave(async (user) => {
     if (user.changed("password")) {
       user.password = await bcrypt.hash(user.password, 10);
     }
   });
+
   return User;
 };
